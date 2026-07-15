@@ -1,0 +1,64 @@
+version: '3.8'
+
+services:
+  # ----------------------------------------------------
+  # PostgreSQL Database Service
+  # ----------------------------------------------------
+  erms-db:
+    image: postgres:16-alpine
+    container_name: erms_postgres
+    restart: always
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin@123
+      POSTGRES_DB: employee_registration
+    ports:
+      - '5433:5432' # Host port 5433 to avoid conflicts with local DBs
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U admin -d employee_registration']
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # ----------------------------------------------------
+  # Node.js Backend API Service
+  # ----------------------------------------------------
+  erms-backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: erms_backend
+    restart: always
+    depends_on:
+      erms-db:
+        condition: service_healthy
+    environment:
+      - DATABASE_URL=postgresql://admin:admin%40123@erms-db:5432/employee_registration?schema=public
+      - JWT_SECRET=super_secret_jwt_key_for_production_use_only
+      - JWT_EXPIRES_IN=7d
+      - CORS_ORIGIN=http://localhost
+      - NODE_ENV=production
+    ports:
+      - '5000:5000'
+    # Use command to run Prisma migrations before starting the server
+    command: sh -c "npx prisma migrate deploy && node dist/server.js"
+
+  # ----------------------------------------------------
+  # Nginx Frontend UI Service
+  # ----------------------------------------------------
+  erms-frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: erms_frontend
+    restart: always
+    depends_on:
+      - erms-backend
+    ports:
+      - '80:80'
+
+volumes:
+  pgdata:
+    name: erms_pgdata

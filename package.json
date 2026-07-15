@@ -1,0 +1,31 @@
+{
+  "name": "employee-registration-system",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Production-quality Employee Registration Management System",
+  "scripts": {
+    "prepare": "husky",
+    "dev:backend": "cd backend && npm run dev",
+    "dev:frontend": "cd frontend && npm run dev",
+    "lint:backend": "cd backend && npm run lint",
+    "lint:frontend": "cd frontend && npm run lint",
+    "typecheck:backend": "cd backend && npm run typecheck",
+    "typecheck:frontend": "cd frontend && npm run typecheck",
+    "format": "prettier --write \"**/*.{ts,tsx,js,json,md,yml,yaml,html,css}\" --ignore-path .gitignore"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^19.3.0",
+    "@commitlint/config-conventional": "^19.2.2",
+    "husky": "^9.0.11",
+    "lint-staged": "^15.2.7",
+    "prettier": "^3.3.2"
+  },
+  "lint-staged": {
+    "**/*.{ts,tsx,js,jsx}": [
+      "prettier --write"
+    ],
+    "**/*.{json,md,yml,yaml,html,css}": [
+      "prettier --write"
+    ]
+  }
+}

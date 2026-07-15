@@ -1,0 +1,17 @@
+{
+  "recommendations": [
+    "esbenp.prettier-vscode",
+    "dbaeumer.vscode-eslint",
+    "Prisma.prisma",
+    "bradlc.vscode-tailwindcss",
+    "EditorConfig.EditorConfig",
+    "eamodio.gitlens",
+    "streetsidesoftware.code-spell-checker",
+    "christian-kohler.path-intellisense",
+    "mikestead.dotenv",
+    "PKief.material-icon-theme",
+    "usernamehw.errorlens",
+    "wix.vscode-import-cost"
+  ],
+  "unwantedRecommendations": ["HookyQR.beautify", "hookyqr.beautify"]
+}

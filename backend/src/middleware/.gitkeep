@@ -1,0 +1,2 @@
+// This file is intentionally empty.
+// Phase 3 will add: jwtMiddleware (protect routes with JWT verification)
